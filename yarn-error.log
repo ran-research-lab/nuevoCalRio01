@@ -1,0 +1,52 @@
+Arguments: 
+  /media/rarce/Ubuntu/usr/local/bin/node /media/rarce/Ubuntu/usr/local/bin/yarn
+
+PATH: 
+  /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/media/rarce/Ubuntu/usr/local/sbin:/media/rarce/Ubuntu/usr/local/bin:/media/rarce/Ubuntu/usr/bin:/media/rarce/Ubuntu/snap/bin:/home/rarce/.local/bin
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  18.15.0
+
+Platform: 
+  linux x64
+
+Trace: 
+  SyntaxError: /home/rarce/projects/rio/rnc/package.json: Unexpected token / in JSON at position 360
+      at JSON.parse (<anonymous>)
+      at /media/rarce/Ubuntu/usr/local/lib/node_modules/yarn/lib/cli.js:1629:59
+      at Generator.next (<anonymous>)
+      at step (/media/rarce/Ubuntu/usr/local/lib/node_modules/yarn/lib/cli.js:310:30)
+      at /media/rarce/Ubuntu/usr/local/lib/node_modules/yarn/lib/cli.js:321:13
+
+npm manifest: 
+  {
+    "name": "rnc",
+    "version": "1.0.0",
+    "main": "node_modules/expo/AppEntry.js",
+    "scripts": {
+      "start": "expo start",
+      "android": "expo start --android",
+      "ios": "expo start --ios",
+      "web": "expo start --web"
+    },
+    "dependencies": {
+      "expo": "~48.0.10",
+      "expo-status-bar": "~1.4.4",
+      "react": "18.2.0",
+      "react-native": "0.71.6"
+  //    "react-native-calendars": "^1.1294.0" 
+    },
+    "devDependencies": {
+      "@babel/core": "^7.20.0"
+    },
+    "private": true
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
