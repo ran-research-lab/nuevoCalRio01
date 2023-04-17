@@ -4,6 +4,8 @@ import {Text, View, Box,StyleSheet, Dimensions,TouchableOpacity}  from 'react-na
 import { useNavigation } from '@react-navigation/native';
 import Diario from '../Diario/Diary';
 
+
+const screenWidth =  Dimensions.get("window").width;
 const centerX = Dimensions.get("window").width / 2;
 const squareSide = Dimensions.get("window").height * 0.202;
 const margin = Dimensions.get("window").height * 0.008;
@@ -15,7 +17,12 @@ const verdeAzulado = "#4EB5A2";
 const magenta = "#DB8AC0";
 const violeta = "#705C87";
 const rojo = "#F04B35";
+
+const calendarViewWidth  = screenWidth * .88;
+const calendarViewLeft  = (screenWidth - calendarViewWidth)/2.;
+const calendarViewTop  = (screenHeight * .17);
 const RioCalendar = (props) => {
+  
   const navigation = useNavigation();
   const [selected, setSelected] = useState('');
 
@@ -52,8 +59,8 @@ const RioCalendar = (props) => {
   }
 
   return (  
-<>
-<View style={{marginTop:200}}>
+<View style={{backgroundColor: 'white', height: screenHeight}}>
+<View style={{marginTop:calendarViewTop, backgroundColor: 'white', left: calendarViewLeft,width:calendarViewWidth, justifyContent: 'center'}}>
 <Calendar
   // Initially visible month. Default = now
   initialDate={'2023-03-01'}
@@ -112,6 +119,7 @@ disableArrowRight={false}
     borderWidth: 1,
     borderColor: 'gray',
     height: 350
+    
   }}
 
   theme={{
@@ -160,7 +168,7 @@ disableArrowRight={false}
 
 />
 </View>
-</>
+</View>
   );
 };
 

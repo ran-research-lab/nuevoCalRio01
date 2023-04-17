@@ -1,9 +1,13 @@
 import includes from 'lodash/includes';
 import XDate from 'xdate';
-import React, { Fragment, useCallback, useMemo, forwardRef, useImperativeHandle, useRef } from 'react';
-import { ActivityIndicator, Platform, View, Text, TouchableOpacity, Image } from 'react-native';
+import React, { Fragment, useCallback, useMemo, forwardRef, useImperativeHandle, useRef  } from 'react';
+import { ActivityIndicator, Platform, View, Text, TouchableOpacity, Image,Dimensions } from 'react-native';
 import { formatNumbers, weekDayNames } from '../../dateutils';
 import styleConstructor from './style';
+
+const screenHeight = Dimensions.get("window").height;
+const screenWidth = Dimensions.get("window").width;
+
 const accessibilityActions = [
     { name: 'increment', label: 'increment' },
     { name: 'decrement', label: 'decrement' }
@@ -81,9 +85,11 @@ const CalendarHeader = forwardRef((props, ref) => {
     const _renderHeader = () => {
         const webProps = Platform.OS === 'web' ? { 'aria-level': webAriaLevel } : {};
         if (renderHeader) {
+            console.log("Rneding renderHeader.......!!!!!!!!");
             return renderHeader(month);
         }
         if (customHeaderTitle) {
+            console.log("Rneding customeHeader.......!!!!!!!!");
             return customHeaderTitle;
         }
         return (<Fragment>
@@ -92,17 +98,21 @@ const CalendarHeader = forwardRef((props, ref) => {
         </Text>
       </Fragment>);
     };
+
+    // Aqui distinguir entra la flecha derecha y la izquierda
     const _renderArrow = (direction) => {
         if (hideArrows) {
             return <View />;
         }
+        console.log("render arrow?????????????");
         const isLeft = direction === 'left';
         const arrowId = isLeft ? 'leftArrow' : 'rightArrow';
         const shouldDisable = isLeft ? disableArrowLeft : disableArrowRight;
         const onPress = !shouldDisable ? isLeft ? onPressLeft : onPressRight : undefined;
-        const imageSource = isLeft ? require('../img/previous.png') : require('../img/next.png');
+        const imageSource = isLeft ? require('../../../../../assets/regresar15.png') : require('../../../../../assets/continuar15.png');
         const renderArrowDirection = isLeft ? 'left' : 'right';
-        return (<TouchableOpacity onPress={onPress} disabled={shouldDisable} style={style.current.arrow} hitSlop={hitSlop} testID={`${testID}.${arrowId}`}>
+        const arrowStyleRafa = isLeft ? {position: 'absolute', left:0}: {position: 'absolute', left:screenWidth*.80} ;
+        return (<TouchableOpacity onPress={onPress} disabled={shouldDisable} style={arrowStyleRafa} hitSlop={hitSlop} testID={`${testID}.${arrowId}`}>
         {renderArrow ? (renderArrow(renderArrowDirection)) : (<Image source={imageSource} style={shouldDisable ? style.current.disabledArrowImage : style.current.arrowImage}/>)}
       </TouchableOpacity>);
     };

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import isEmpty from 'lodash/isEmpty';
 import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react';
-import { View } from 'react-native';
+import { View, Dimensions } from 'react-native';
 // @ts-expect-error
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import constants from '../commons/constants';
@@ -20,6 +20,11 @@ import BasicDay from './day/basic';
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/calendars.js
  * @gif: https://github.com/wix/react-native-calendars/blob/master/demo/assets/calendar.gif
  */
+const screenWidth = Dimensions.get("window").width;
+const screenHeight = Dimensions.get("window").height;
+const calendarViewWidth  = screenWidth * .88;
+const dayWidth = calendarViewWidth/7.0;
+
 const Calendar = (props) => {
     const { initialDate, current, theme, markedDates, minDate, maxDate, allowSelectionOutOfRange, onDayPress, onDayLongPress, onMonthChange, onVisibleMonthsChange, disableMonthChange, enableSwipeMonths, hideExtraDays, firstDay, showSixWeeks, displayLoadingIndicator, customHeader, headerStyle, accessibilityElementsHidden, importantForAccessibility, testID, style: propsStyle } = props;
     const [currentMonth, setCurrentMonth] = useState(current || initialDate ? parseDate(current || initialDate) : new XDate());
@@ -110,7 +115,7 @@ const Calendar = (props) => {
       </View>);
     };
     const renderWeek = (days, id) => {
-        console.log("in renderWeek: " +days + " " + id);
+        console.log("RenderWeek: " +days + " " + id);
         const week = [];
         days.forEach((day, id2) => {
             week.push(renderDay(day, id2));
@@ -122,6 +127,8 @@ const Calendar = (props) => {
         {week}
       </View>);
     };
+
+    // The view inside this JSX is the line at the bottom of the calendar
     const renderMonth = () => {
         const shouldShowSixWeeks = showSixWeeks && !hideExtraDays;
         const days = page(currentMonth, firstDay, shouldShowSixWeeks);
@@ -129,7 +136,14 @@ const Calendar = (props) => {
         while (days.length) {
             weeks.push(renderWeek(days.splice(0, 7), weeks.length));
         }
-        return <View style={style.current.monthView}>{weeks}</View>;
+        return <View style={style.current.monthView}>{weeks}<View style={{borderTopWidth:1}}/>
+        <View style={{position:'absolute', top:6, left: dayWidth, height: screenHeight*.65, borderLeftWidth:.5, borderLeftColor: '#333333'}}/>
+        <View style={{position:'absolute', top:6, left: 2*dayWidth, height: screenHeight*.65, borderLeftWidth:.5, borderLeftColor: '#333333'}}/>
+        <View style={{position:'absolute', top:6, left: 3*dayWidth, height: screenHeight*.65, borderLeftWidth:.5, borderLeftColor: '#333333'}}/>
+        <View style={{position:'absolute', top:6, left: 4*dayWidth, height: screenHeight*.65, borderLeftWidth:.5, borderLeftColor: '#333333'}}/>
+        <View style={{position:'absolute', top:6, left: 5*dayWidth, height: screenHeight*.65, borderLeftWidth:.5, borderLeftColor: '#333333'}}/>
+        <View style={{position:'absolute', top:6, left: 6*dayWidth, height: screenHeight*.65, borderLeftWidth:.5, borderLeftColor: '#333333'}}/>
+        </View>;
     };
     const shouldDisplayIndicator = useMemo(() => {
         if (currentMonth) {
@@ -141,19 +155,26 @@ const Calendar = (props) => {
         return false;
     }, [currentMonth, displayLoadingIndicator, markedDates]);
     const renderHeader = () => {
+        console.log("****** Rendering the header *******");
         const headerProps = extractHeaderProps(props);
+        headerProps['monthFormat'] = 'MMM-yyyy';
+        
         const ref = customHeader ? undefined : header;
+        console.log('ref:' + ref);
         const CustomHeader = customHeader;
         const HeaderComponent = customHeader ? CustomHeader : CalendarHeader;
-        return (<HeaderComponent {...headerProps} testID={`${testID}.header`} style={headerStyle} ref={ref} month={currentMonth} addMonth={addMonth} displayLoadingIndicator={shouldDisplayIndicator}/>);
+        console.log('HeaderComponent:' + JSON.stringify( HeaderComponent));
+        console.log("header props:" + JSON.stringify(headerStyle));
+        return (<HeaderComponent {...headerProps} testID={`${testID}.header`} style={{color:'red'}} ref={ref} month={currentMonth} addMonth={addMonth} displayLoadingIndicator={shouldDisplayIndicator}/>);
     };
     const GestureComponent = enableSwipeMonths ? GestureRecognizer : View;
     const swipeProps = {
         onSwipe: (direction) => onSwipe(direction)
     };
     const gestureProps = enableSwipeMonths ? swipeProps : undefined;
+    // Quite , propsStyle del style
     return (<GestureComponent {...gestureProps}>
-      <View style={[style.current.container, propsStyle]} testID={testID} accessibilityElementsHidden={accessibilityElementsHidden} // iOS
+      <View style={[style.current.container]} testID={testID} accessibilityElementsHidden={accessibilityElementsHidden} // iOS
      importantForAccessibility={importantForAccessibility} // Android
     >
         {renderHeader()}

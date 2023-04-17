@@ -1,6 +1,14 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import * as defaultStyle from '../../../style';
 import constants from '../../../commons/constants';
+
+
+const margin = Dimensions.get("window").width * 0.008;
+const dayWidth = (Dimensions.get("window").width - margin) / 17.0;
+const dayHeight = (Dimensions.get("window").height) / 9.0;
+// const squareSide = (Dimensions.get("window").height - margin) / 7.0;
+
+
 export default function styleConstructor(theme = {}) {
     const appStyle = { ...defaultStyle, ...theme };
     return StyleSheet.create({
@@ -9,11 +17,11 @@ export default function styleConstructor(theme = {}) {
             alignItems: 'center'
         },
         base: {
-            width: 32 * 1.5 ,
-            height: 32 * 2.5,
-            borderWidth: 1,
+            width: dayWidth, //32 * 1.7 ,
+            height: dayHeight, //32 * 2.5,
+            // borderRightWidth: 1,
             alignItems: 'center',
-            marginTop: -12,
+            // marginTop: -12,
 
         },
         text: {

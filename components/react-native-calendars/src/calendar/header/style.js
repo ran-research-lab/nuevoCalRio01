@@ -1,6 +1,15 @@
-import { StyleSheet, Platform } from 'react-native';
+//
+// Styles for the calendar "HEADER"
+//
+
+import { StyleSheet, Platform, Dimensions } from 'react-native';
 import * as defaultStyle from '../../style';
 import constants from '../../commons/constants';
+
+
+const topForMonth = Dimensions.get("window").height * .70;
+const screenWidth = Dimensions.get("window").width;
+
 export default function (theme = {}) {
     const appStyle = { ...defaultStyle, ...theme };
     const rtlStyle = constants.isRTL ? { transform: [{ scaleX: -1 }] } : undefined;
@@ -8,9 +17,11 @@ export default function (theme = {}) {
         header: {
             flexDirection: 'row',
             justifyContent: 'space-between',
-            paddingLeft: 10,
-            paddingRight: 10,
-            marginTop: 6,
+            // paddingLeft: 10,
+            // paddingRight: 10,
+            // marginTop: 6,
+            top:topForMonth,
+            position: 'absolute',
             alignItems: 'center',
         },
         partialHeader: {
@@ -20,19 +31,28 @@ export default function (theme = {}) {
             flexDirection: 'row'
         },
         monthText: {
-            fontSize: appStyle.textMonthFontSize,
-            fontFamily: appStyle.textMonthFontFamily,
-            fontWeight: appStyle.textMonthFontWeight,
+            fontSize: 30,//appStyle.textMonthFontSize,
+            // fontFamily: appStyle.textMonthFontFamily,
+            // fontWeight: appStyle.textMonthFontWeight,
             color: appStyle.monthTextColor,
-            margin: 10
+            // marginLeft: 60,
+            // marginRight: 60,
+            left:0,
+            width: screenWidth *.88,
+            textAlign: 'center',
+            zIndex: -10
+            // color: 'red',
+            // borderWidth: 1
+            
         },
         arrow: {
-            padding: 10,
+            // padding: 10,
             ...appStyle.arrowStyle
         },
         arrowImage: {
+            zIndex: 1,
             ...rtlStyle,
-            tintColor: appStyle.arrowColor,
+            tintColor: 'red',//appStyle.arrowColor,
             ...Platform.select({
                 web: {
                     width: appStyle.arrowWidth,

@@ -156,6 +156,7 @@ const CalendarList = (props, ref) => {
     }, [horizontal, calendarStyle, calendarWidth, testID, getMarkedDatesForItem, isDateInRange, calendarProps]);
     const renderStaticHeader = () => {
         if (staticHeader && horizontal) {
+            console.log("Rendering static header........!!!!!");
             return (<CalendarHeader {...headerProps} testID={`${testID}.staticHeader`} style={staticHeaderStyle} month={currentMonth} addMonth={addMonth} accessibilityElementsHidden={true} // iOS
              importantForAccessibility={'no-hide-descendants'} // Android
             />);
