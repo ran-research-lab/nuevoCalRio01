@@ -88,15 +88,17 @@ const Calendar = (props) => {
         }
     }, [onSwipeLeft, onSwipeRight]);
     const renderWeekNumber = (weekNumber) => {
+        console.log("in renderWNum: " + JSON.stringify(weekNumber));
         return (<View style={style.current.dayContainer} key={`week-container-${weekNumber}`}>
         <BasicDay key={`week-${weekNumber}`} marking={weekNumberMarking.current} 
-        // state='disabled'
-        theme={theme} testID={`${testID}.weekNumber_${weekNumber}`}>
+        state='disabled'
+        theme={theme} testID={`${testID}.weekNumber_${weekNumber}`} pepe='caca'>
           {weekNumber}
         </BasicDay>
       </View>);
     };
     const renderDay = (day, id) => {
+        // console.log("in renderDay: " +day + " " + id);
         const dayProps = extractDayProps(props);
         if (!sameMonth(day, currentMonth) && hideExtraDays) {
             return <View key={id} style={style.current.emptyDayContainer}/>;
@@ -104,10 +106,11 @@ const Calendar = (props) => {
         const dateString = toMarkingFormat(day);
         const isControlled = isEmpty(props.context);
         return (<View style={style.current.dayContainer} key={id}>
-        <Day {...dayProps} testID={`${testID}.day_${dateString}`} date={dateString} state={getState(day, currentMonth, props, isControlled)} marking={markedDates?.[dateString]} onPress={_onDayPress} onLongPress={onLongPressDay}/>
+        <Day {...dayProps} testID={`${testID}.day_${dateString}`} date={dateString} state={getState(day, currentMonth, props, isControlled)} marking={markedDates?.[dateString]} onPress={_onDayPress} onLongPress={onLongPressDay} mood='happy'/>
       </View>);
     };
     const renderWeek = (days, id) => {
+        console.log("in renderWeek: " +days + " " + id);
         const week = [];
         days.forEach((day, id2) => {
             week.push(renderDay(day, id2));

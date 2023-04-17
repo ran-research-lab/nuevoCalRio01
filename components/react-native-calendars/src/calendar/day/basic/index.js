@@ -1,10 +1,10 @@
 import React, { Fragment, useCallback, useRef } from 'react';
-import { TouchableOpacity, Text, View } from 'react-native';
+import { TouchableOpacity, Text, View, Image } from 'react-native';
 import { xdateToData } from '../../../interface';
 import styleConstructor from './style';
 import Marking from '../marking';
 const BasicDay = (props) => {
-    const { theme, date, onPress, onLongPress, markingType, marking, state, disableAllTouchEventsForDisabledDays, disableAllTouchEventsForInactiveDays, accessibilityLabel, children, testID } = props;
+    const { theme, date, onPress, onLongPress, markingType, marking, state, disableAllTouchEventsForDisabledDays, disableAllTouchEventsForInactiveDays, accessibilityLabel, children, testID, mood} = props;
     const style = useRef(styleConstructor(theme));
     const _marking = marking || {};
     const isSelected = _marking.selected || state === 'selected';
@@ -15,6 +15,9 @@ const BasicDay = (props) => {
     const isMultiPeriod = markingType === Marking.markings.MULTI_PERIOD;
     const isCustom = markingType === Marking.markings.CUSTOM;
     const dateData = date ? xdateToData(date) : undefined;
+
+    // console.log("punto:" + JSON.stringify(props));
+
     const shouldDisableTouchEvent = () => {
         const { disableTouchEvent } = _marking;
         let disableTouch = false;
@@ -81,8 +84,15 @@ const BasicDay = (props) => {
         onLongPress?.(dateData);
     }, [onLongPress, date]);
     const renderMarking = () => {
-        const { marked, dotColor, dots, periods } = _marking;
+        const { marked, dotColor, dots, periods, moodEmoji } = _marking;
         return (<Marking type={markingType} theme={theme} marked={isMultiDot ? true : marked} selected={isSelected} disabled={isDisabled} inactive={isInactive} today={isToday} dotColor={dotColor} dots={dots} periods={periods}/>);
+    };
+    const renderRafa = () => {
+        const { moodEmoji } = _marking;
+        let img = moodEmoji === undefined ? '' : 
+               <Image style={{width:20, height:20, top: 10}} source={require('../../../../../../assets/thumbnailTristeza.png')}/>
+        return (<View>{img}</View>);
+        // return (<Text>{punto}</Text>);
     };
     const renderText = () => {
         return (<Text allowFontScaling={false} style={getTextStyle()}>
@@ -93,6 +103,7 @@ const BasicDay = (props) => {
         return (<Fragment>
         {renderText()}
         {renderMarking()}
+        {renderRafa()}
       </Fragment>);
     };
     const renderContainer = () => {
