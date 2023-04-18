@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import isEmpty from 'lodash/isEmpty';
 import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react';
-import { View, Dimensions } from 'react-native';
+import { View, Dimensions, Text } from 'react-native';
 // @ts-expect-error
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import constants from '../commons/constants';
@@ -15,6 +15,8 @@ import styleConstructor from './style';
 import CalendarHeader from './header';
 import Day from './day/index';
 import BasicDay from './day/basic';
+import rioConstants from '../../../../constants';
+
 /**
  * @description: Calendar component
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/calendars.js
@@ -136,13 +138,14 @@ const Calendar = (props) => {
         while (days.length) {
             weeks.push(renderWeek(days.splice(0, 7), weeks.length));
         }
+        let calHeight = rioConstants.dayHeight * 5 + 5;
         return <View style={style.current.monthView}>{weeks}<View style={{borderTopWidth:1}}/>
-        <View style={{position:'absolute', top:6, left: dayWidth, height: screenHeight*.65, borderLeftWidth:.5, borderLeftColor: '#333333'}}/>
-        <View style={{position:'absolute', top:6, left: 2*dayWidth, height: screenHeight*.65, borderLeftWidth:.5, borderLeftColor: '#333333'}}/>
-        <View style={{position:'absolute', top:6, left: 3*dayWidth, height: screenHeight*.65, borderLeftWidth:.5, borderLeftColor: '#333333'}}/>
-        <View style={{position:'absolute', top:6, left: 4*dayWidth, height: screenHeight*.65, borderLeftWidth:.5, borderLeftColor: '#333333'}}/>
-        <View style={{position:'absolute', top:6, left: 5*dayWidth, height: screenHeight*.65, borderLeftWidth:.5, borderLeftColor: '#333333'}}/>
-        <View style={{position:'absolute', top:6, left: 6*dayWidth, height: screenHeight*.65, borderLeftWidth:.5, borderLeftColor: '#333333'}}/>
+        <View style={{position:'absolute', top:0, left: dayWidth, height: calHeight, borderLeftWidth:.5, borderLeftColor: '#333333'}}/>
+        <View style={{position:'absolute', top:0, left: 2*dayWidth, height: calHeight, borderLeftWidth:.5, borderLeftColor: '#333333'}}/>
+        <View style={{position:'absolute', top:0, left: 3*dayWidth, height: calHeight, borderLeftWidth:.5, borderLeftColor: '#333333'}}/>
+        <View style={{position:'absolute', top:0, left: 4*dayWidth, height: calHeight, borderLeftWidth:.5, borderLeftColor: '#333333'}}/>
+        <View style={{position:'absolute', top:0, left: 5*dayWidth, height: calHeight, borderLeftWidth:.5, borderLeftColor: '#333333'}}/>
+        <View style={{position:'absolute', top:0, left: 6*dayWidth, height: calHeight, borderLeftWidth:.5, borderLeftColor: '#333333'}}/>
         </View>;
     };
     const shouldDisplayIndicator = useMemo(() => {
@@ -173,11 +176,23 @@ const Calendar = (props) => {
     };
     const gestureProps = enableSwipeMonths ? swipeProps : undefined;
     // Quite , propsStyle del style
+    let test = "D";
+    const daysOfWeek=['L','M', 'W', 'J', 'V', 'S', 'D'];
+    let dayWidth = constants.screenWidth * .88 / 7.;
+    let dayLabels = <View ><Text style={{top:0, left: dayWidth*.4, position:'absolute'}}>{daysOfWeek[0]}</Text>
+    <Text style={{top:0, left:dayWidth*1.4, position:'absolute'}}>{daysOfWeek[1]}</Text>
+    <Text style={{top:0, left:dayWidth*2.4, position:'absolute'}}>{daysOfWeek[2]}</Text>
+    <Text style={{top:0, left:dayWidth*3.4, position:'absolute'}}>{daysOfWeek[3]}</Text>
+    <Text style={{top:0, left:dayWidth*4.4, position:'absolute'}}>{daysOfWeek[4]}</Text>
+    <Text style={{top:0, left:dayWidth*5.4, position:'absolute'}}>{daysOfWeek[5]}</Text>
+    <Text style={{top:0, left:dayWidth*6.4, position:'relative'}}>{daysOfWeek[6]}</Text>
+    </View>
     return (<GestureComponent {...gestureProps}>
       <View style={[style.current.container]} testID={testID} accessibilityElementsHidden={accessibilityElementsHidden} // iOS
      importantForAccessibility={importantForAccessibility} // Android
-    >
+    >   
         {renderHeader()}
+        <View style={{borderTopWidth:1, margin:0}}>{dayLabels}</View>
         {renderMonth()}
       </View>
     </GestureComponent>);

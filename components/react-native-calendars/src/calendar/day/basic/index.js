@@ -90,13 +90,13 @@ const BasicDay = (props) => {
     const renderRafa = () => {
         const { moodEmoji } = _marking;
         let img = moodEmoji === undefined ? '' : 
-               <Image style={{width:20, height:20, top: 10}} source={require('../../../../../../assets/thumbnailTristeza.png')}/>
+               <Image style={{width:30, height:30, top: 5}} source={require('../../../../../../assets/thumbnailTristeza.png')}/>
         return (<View>{img}</View>);
         // return (<Text>{punto}</Text>);
     };
     const renderText = () => {
         return (<Text allowFontScaling={false} style={getTextStyle()}>
-        {String(children)}
+        {String(children).padStart(2,'0')} 
       </Text>);
     };
     const renderContent = () => {

@@ -21,10 +21,11 @@ export default function getStyle(theme = {}) {
             flex: 1
         },
         monthView: {
-            backgroundColor: appStyle.calendarBackground
+            backgroundColor: appStyle.calendarBackground,
         },
+        //Rafa
         week: {
-            marginVertical: appStyle.weekVerticalMargin,
+            marginVertical: 0, //appStyle.weekVerticalMargin,
             flexDirection: 'row',
             justifyContent: 'space-around',
             borderTopWidth: 1,

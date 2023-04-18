@@ -5,10 +5,9 @@
 import { StyleSheet, Platform, Dimensions } from 'react-native';
 import * as defaultStyle from '../../style';
 import constants from '../../commons/constants';
+import rioConstants from '../../../../../constants';
 
-
-const topForMonth = Dimensions.get("window").height * .70;
-const screenWidth = Dimensions.get("window").width;
+const topForMonth = constants.screenHeight * .70;
 
 export default function (theme = {}) {
     const appStyle = { ...defaultStyle, ...theme };
@@ -34,15 +33,16 @@ export default function (theme = {}) {
             fontSize: 30,//appStyle.textMonthFontSize,
             // fontFamily: appStyle.textMonthFontFamily,
             // fontWeight: appStyle.textMonthFontWeight,
-            color: appStyle.monthTextColor,
+            color: rioConstants.verdeAzulado, //appStyle.monthTextColor,
             // marginLeft: 60,
             // marginRight: 60,
-            left:0,
-            width: screenWidth *.88,
+            left:constants.screenWidth*(.44-.35),
+            width: constants.screenWidth * .88 *.7    ,
             textAlign: 'center',
-            zIndex: -10
+            zIndex: 0,
             // color: 'red',
-            // borderWidth: 1
+            // borderWidth: 1,
+            // position:'absolute'
             
         },
         arrow: {
@@ -50,15 +50,17 @@ export default function (theme = {}) {
             ...appStyle.arrowStyle
         },
         arrowImage: {
-            zIndex: 1,
+            zIndex: 100,
+            
             ...rtlStyle,
-            tintColor: 'red',//appStyle.arrowColor,
+            tintColor: rioConstants.verdeAzulado,//appStyle.arrowColor,
             ...Platform.select({
                 web: {
                     width: appStyle.arrowWidth,
                     height: appStyle.arrowHeight
                 }
-            })
+            }),
+            // resizeMode: 'center'
         },
         disabledArrowImage: {
             ...rtlStyle,

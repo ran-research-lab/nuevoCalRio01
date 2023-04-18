@@ -6,6 +6,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 // import { browserHistory } from 'react-router';
 import { Espanol, English } from '../../Idioma/Idiomas';
+import rioConstants from '../../constants';
 
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -56,7 +57,7 @@ function Diario( props) {
   //   return formattedDate;
   // }
   const formatedDate = day.toString().padStart(2, '0')  + '.' + month.toString().padStart(2, '0') + '.' + year % 100;
-
+  const imageSource = require('../../assets/regresar15.png');
   return (
     <>
       <View style={styles.topLine}/>
@@ -86,10 +87,14 @@ function Diario( props) {
             style={styles.inputText}
             onChangeText={setText}
             value={text}
+            textAlignVertical= 'top'
             
         />
-        <Pressable onPress={() => navigation.navigate('Calendario')}>
-          <Text style={styles.buttonText}>{"<"}  Regresar</Text>
+        
+        <Pressable onPress={() => navigation.navigate('Calendario')} style={{left:  0}}>
+          <View style={{top: rioConstants.screenHeight * .5, left:0, zIndex: 45, position: 'absolute', flex: 1, display: 'flex',  alignItems: 'center'}}>
+          <Text style={styles.buttonText}> <Image source={imageSource}   resizeMode = 'center'></Image> Regresar</Text>
+          </View>
         </Pressable>
 
         </View>
@@ -177,10 +182,13 @@ const styles = StyleSheet.create({
   },
 
   inputText: {
-    height: 400,
-    margin: 12,
+    top: rioConstants.screenHeight * .05,
+    height: rioConstants.screenHeight * .5,
+    width: rioConstants.screenWidth * .88,
+    left: rioConstants.screenWidth * 0,
     borderWidth: 2,
     borderRadius:5,
+    position: 'absolute',
     //padding: 10,
   },
   container: {
@@ -194,11 +202,16 @@ const styles = StyleSheet.create({
   textContainer:{
     fontSize: 20,
     fontWeight:'600',
-    left: "1%"
+    left: "1%",
+    textAlignVertical: 'top'
   },
   buttonText: {
     fontSize: 18,
     fontWeight:'600',
-    left: "1%"
+    left: 0,
+    // left: "1%"
+    // top: 0,
+    // position: 'absolute',
+    color: rioConstants.verdeAzulado
   }
 });

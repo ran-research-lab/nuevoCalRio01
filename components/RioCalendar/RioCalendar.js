@@ -3,7 +3,7 @@ import {Calendar, CalendarList, LocaleConfig} from 'react-native-calendars';
 import {Text, View, Box,StyleSheet, Dimensions,TouchableOpacity}  from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Diario from '../Diario/Diary';
-
+import rioConstants from '../../constants';
 
 const screenWidth =  Dimensions.get("window").width;
 const centerX = Dimensions.get("window").width / 2;
@@ -11,16 +11,16 @@ const squareSide = Dimensions.get("window").height * 0.202;
 const margin = Dimensions.get("window").height * 0.008;
 const screenHeight = Dimensions.get("window").height;
 const tenPercent = Dimensions.get("window").height * 0.1;
-const azulMarino = "#1C7BBA";
-const azulAnil = "#5B8EB0";
-const verdeAzulado = "#4EB5A2";
-const magenta = "#DB8AC0";
-const violeta = "#705C87";
-const rojo = "#F04B35";
+// const azulMarino = "#1C7BBA";
+// const azulAnil = "#5B8EB0";
+// const verdeAzulado = "#4EB5A2";
+// const magenta = "#DB8AC0";
+// const violeta = "#705C87";
+// const rojo = "#F04B35";
 
-const calendarViewWidth  = screenWidth * .88;
-const calendarViewLeft  = (screenWidth - calendarViewWidth)/2.;
-const calendarViewTop  = (screenHeight * .17);
+const calendarViewWidth  = rioConstants.screenWidth * .88;
+const calendarViewLeft  = (rioConstants.screenWidth - calendarViewWidth)/2.;
+const calendarViewTop  = (rioConstants.screenHeight * .17);
 const RioCalendar = (props) => {
   
   const navigation = useNavigation();
@@ -59,7 +59,7 @@ const RioCalendar = (props) => {
   }
 
   return (  
-<View style={{backgroundColor: 'white', height: screenHeight}}>
+<View style={{backgroundColor: 'white', height: screenHeight * 2}}>
 <View style={{marginTop:calendarViewTop, backgroundColor: 'white', left: calendarViewLeft,width:calendarViewWidth, justifyContent: 'center'}}>
 <Calendar
   // Initially visible month. Default = now
@@ -201,59 +201,59 @@ const styles = StyleSheet.create({
   rectangle01: {
      borderWidth: 1
   },
-  rectangle02: {
-    backgroundColor: azulAnil,
-    zIndex: 98,
-    top: squareSide,
-    left: centerX + 0.5 * margin,
-  },
-  rectangle03: {
-    backgroundColor: verdeAzulado,
-    zIndex: 98,
-    top: squareSide + margin + squareSide,
-    left: centerX - (squareSide + 0.5 * margin),
-  },
-  rectangle04: {
-    backgroundColor: rojo,
-    zIndex: 98,
-    top: squareSide + margin + squareSide,
-    left: centerX + 0.5 * margin,
-  },
-  rectangle05: {
-    backgroundColor: violeta,
-    zIndex: 98,
-    top: 3 * squareSide + 2 * margin,
-    left: centerX - (squareSide + 0.5 * margin),
-  },
-  rectangle06: {
-    backgroundColor: magenta,
-    zIndex: 98,
-    top: 3 * squareSide + 2 * margin,
-    left: centerX + 0.5 * margin,
-  },
+  // rectangle02: {
+  //   backgroundColor: rioConstants.azulAnil,
+  //   zIndex: 98,
+  //   top: squareSide,
+  //   left: centerX + 0.5 * margin,
+  // },
+  // rectangle03: {
+  //   backgroundColor: rioConstants.verdeAzulado,
+  //   zIndex: 98,
+  //   top: squareSide + margin + squareSide,
+  //   left: centerX - (squareSide + 0.5 * margin),
+  // },
+  // rectangle04: {
+  //   backgroundColor: rojo,
+  //   zIndex: 98,
+  //   top: squareSide + margin + squareSide,
+  //   left: centerX + 0.5 * margin,
+  // },
+  // rectangle05: {
+  //   backgroundColor: violeta,
+  //   zIndex: 98,
+  //   top: 3 * squareSide + 2 * margin,
+  //   left: centerX - (squareSide + 0.5 * margin),
+  // },
+  // rectangle06: {
+  //   backgroundColor: magenta,
+  //   zIndex: 98,
+  //   top: 3 * squareSide + 2 * margin,
+  //   left: centerX + 0.5 * margin,
+  // },
 
-  comoTeSientesText: { fontSize: 24, color: verdeAzulado },
-  comoTeSientesView: {
-    height: tenPercent,
-    width: squareSide * 2 + margin,
-    zIndex: 99,
-    position: "absolute",
-    top: 4 * squareSide + 3 * margin,
-    left: centerX - (squareSide + 0.5 * margin),
-    justifyContent: "center",
-    alignItems: "flex-start",
-    borderBottomColor: verdeAzulado,
-    borderBottomWidth: 2,
-    borderStyle: "solid",
-  },
-  desarrolladoEnView: {
-    top: 4 * squareSide + 3 * margin + tenPercent,
-    left: centerX - (squareSide + 0.5 * margin),
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-  },
+  // comoTeSientesText: { fontSize: 24, color: verdeAzulado },
+  // comoTeSientesView: {
+  //   height: tenPercent,
+  //   width: squareSide * 2 + margin,
+  //   zIndex: 99,
+  //   position: "absolute",
+  //   top: 4 * squareSide + 3 * margin,
+  //   left: centerX - (squareSide + 0.5 * margin),
+  //   justifyContent: "center",
+  //   alignItems: "flex-start",
+  //   borderBottomColor: verdeAzulado,
+  //   borderBottomWidth: 2,
+  //   borderStyle: "solid",
+  // },
+  // desarrolladoEnView: {
+  //   top: 4 * squareSide + 3 * margin + tenPercent,
+  //   left: centerX - (squareSide + 0.5 * margin),
+  //   justifyContent: "flex-start",
+  //   alignItems: "flex-start",
+  // },
 
-  desarrolladoEnText: { fontSize: 7, color: verdeAzulado },
+  // desarrolladoEnText: { fontSize: 7, color: verdeAzulado },
 });
 
 export default RioCalendar;

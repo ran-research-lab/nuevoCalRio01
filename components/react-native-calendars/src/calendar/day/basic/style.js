@@ -1,11 +1,15 @@
+// 
+// THE DAY PROPERTIES ARE HERE
+//
+
 import { StyleSheet, Dimensions } from 'react-native';
 import * as defaultStyle from '../../../style';
 import constants from '../../../commons/constants';
+import rioConstants from '../../../../../../constants';
 
-
-const margin = Dimensions.get("window").width * 0.008;
-const dayWidth = (Dimensions.get("window").width - margin) / 17.0;
-const dayHeight = (Dimensions.get("window").height) / 9.0;
+// const margin = Dimensions.get("window").width * 0.008;
+// const dayWidth = (Dimensions.get("window").width - margin) / 17.0;
+// const dayHeight = (Dimensions.get("window").height) / 10.0;
 // const squareSide = (Dimensions.get("window").height - margin) / 7.0;
 
 
@@ -17,9 +21,9 @@ export default function styleConstructor(theme = {}) {
             alignItems: 'center'
         },
         base: {
-            width: dayWidth, //32 * 1.7 ,
-            height: dayHeight, //32 * 2.5,
-            // borderRightWidth: 1,
+            // width: rioConstants.dayWidth, //32 * 1.7 ,
+            height: rioConstants.dayHeight, //32 * 2.5,
+            // borderWidth: 1,
             alignItems: 'center',
             // marginTop: -12,
 

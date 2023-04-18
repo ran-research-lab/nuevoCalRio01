@@ -92,9 +92,10 @@ const CalendarHeader = forwardRef((props, ref) => {
             console.log("Rneding customeHeader.......!!!!!!!!");
             return customHeaderTitle;
         }
+        console.log("THIS IS MONTH:" + month.toString(monthFormat).toUpperCase());
         return (<Fragment>
         <Text allowFontScaling={false} style={style.current.monthText} testID={`${testID}.title`} {...webProps}>
-          {formatNumbers(month?.toString(monthFormat))}
+          {formatNumbers(month?.toString(monthFormat).toUpperCase())}
         </Text>
       </Fragment>);
     };
@@ -111,7 +112,7 @@ const CalendarHeader = forwardRef((props, ref) => {
         const onPress = !shouldDisable ? isLeft ? onPressLeft : onPressRight : undefined;
         const imageSource = isLeft ? require('../../../../../assets/regresar15.png') : require('../../../../../assets/continuar15.png');
         const renderArrowDirection = isLeft ? 'left' : 'right';
-        const arrowStyleRafa = isLeft ? {position: 'absolute', left:0}: {position: 'absolute', left:screenWidth*.80} ;
+        const arrowStyleRafa = isLeft ? { left:0}: {position: 'absolute', left:screenWidth*.80} ;
         return (<TouchableOpacity onPress={onPress} disabled={shouldDisable} style={arrowStyleRafa} hitSlop={hitSlop} testID={`${testID}.${arrowId}`}>
         {renderArrow ? (renderArrow(renderArrowDirection)) : (<Image source={imageSource} style={shouldDisable ? style.current.disabledArrowImage : style.current.arrowImage}/>)}
       </TouchableOpacity>);

@@ -8,7 +8,7 @@ import RioCalendar from './components/RioCalendar/RioCalendar';
 import * as SQLite from "expo-sqlite";
 import Diario from './components/Diario/Diary';
 const diaryTableName = "diario";
-
+// import rioConstants from './constants';
 
 function openDatabase() {
   if (Platform.OS === "web") {
