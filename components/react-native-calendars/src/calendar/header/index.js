@@ -110,7 +110,7 @@ const CalendarHeader = forwardRef((props, ref) => {
         const arrowId = isLeft ? 'leftArrow' : 'rightArrow';
         const shouldDisable = isLeft ? disableArrowLeft : disableArrowRight;
         const onPress = !shouldDisable ? isLeft ? onPressLeft : onPressRight : undefined;
-        const imageSource = isLeft ? require('../../../../../assets/regresar15.png') : require('../../../../../assets/continuar15.png');
+        const imageSource = isLeft ? require('../../../../../assets/regresar10.png') : require('../../../../../assets/continuar10.png');
         const renderArrowDirection = isLeft ? 'left' : 'right';
         const arrowStyleRafa = isLeft ? { left:0}: {position: 'absolute', left:screenWidth*.80} ;
         return (<TouchableOpacity onPress={onPress} disabled={shouldDisable} style={arrowStyleRafa} hitSlop={hitSlop} testID={`${testID}.${arrowId}`}>

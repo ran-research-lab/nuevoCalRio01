@@ -117,7 +117,7 @@ const Calendar = (props) => {
       </View>);
     };
     const renderWeek = (days, id) => {
-        console.log("RenderWeek: " +days + " " + id);
+        // console.log("RenderWeek: " +days + " " + id);
         const week = [];
         days.forEach((day, id2) => {
             week.push(renderDay(day, id2));

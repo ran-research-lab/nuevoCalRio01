@@ -7,8 +7,10 @@ import { useFocusEffect } from '@react-navigation/native';
 // import { browserHistory } from 'react-router';
 import { Espanol, English } from '../../Idioma/Idiomas';
 import rioConstants from '../../constants';
-import {db, database} from '../../db';
-import {StoreContext} from '../../store/context/store';
+
+
+import { useDispatch, useSelector } from 'react-redux';
+import { increaseByOne, decreaseByOne } from '../../redux/slices/counterSlice';
 
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -18,60 +20,40 @@ const DismissKeyboard = ({ children }) => (
 
 function Diario( props) {
   const navigation = useNavigation();
-  const [text, setText] = useState('');
+  
 
 
   const {day} = props.route.params;
   const {month} = props.route.params;
   const {year} = props.route.params;
   const {dateString} = props.route.params;
-  const dateDataCtx = useContext(StoreContext); 
+
+
+  const texto = useSelector(state => state.counter.dateData.hasOwnProperty(dateString) ? state.counter.dateData[dateString].text: '' );
+  console.log( "AAAAAAAA: " + texto);
+  const [text, setText] = useState(texto);
+
+
+  const dispatch = useDispatch();
   useEffect(
     () =>
       navigation.addListener('beforeRemove', (e) => {
-
         // Prevent default behavior of leaving the screen
         e.preventDefault();
         console.log("The text: " + text);
-
-        // prevValue = props.route.params.onAnyRows( month + "/" + day + "/" + year) ;
-        // console.log("PREV VALUE: "+ prevValue);
-
-
-        // Poner esto tal que la función de context sea la que llame a la base de datos
-        // Si el texto está vacío borrar.
-        //if (text.length > 0) {
-          dateDataCtx.addDateData({"theDate":dateString, "value": text} );
-          database.addOrUpdate(text, month + "/" + day + "/" + year, dateString);
-        //}
-        //else {
-        //  removeDateData({"theDate":dateString});
-        //}
-        // props.route.params.onAdd(text, month + "/" + day + "/" + year, dateString);
-        tmpDate = month + "/" + day + "/" + year;
-
-        // if (text.length > 0)
-        //   props.route.params.addToMarkedDates(dateString);
-        // else {
-        //   props.route.params.removeIfExists(dateString);
-        // }
+        dispatch(increaseByOne({"theDate":dateString, "text": text}));
+        // tmpDate = month + "/" + day + "/" + year;
         navigation.dispatch(e.data.action);
       }),
     [text, month, day, year] 
   );
 
-  useEffect(() => {
-     props.route.params.onSelectDiaryEntry( month + "/" + day + "/" + year, 
-         setText, year + "-" + month.toString().padStart(2, '0') + "-" + day.toString().padStart(2, '0')) ;
-  }, []);
 
-  // const formatDate = (dateString) => {
-  //   const [month, day, year] = dateString.split('/');
-  //   const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-  //   return formattedDate;
-  // }
   const formatedDate = day.toString().padStart(2, '0')  + '.' + month.toString().padStart(2, '0') + '.' + year % 100;
   const imageSource = require('../../assets/regresar15.png');
+
+
+  
   return (
     <>
       <View style={styles.topLine}/>
@@ -95,12 +77,14 @@ function Diario( props) {
       <DismissKeyboard>
         <View style={styles.container}>
         <Text style={styles.textContainer}>¿Como te sientes hoy?</Text>
+        {/* <Text>{texto}</Text> */}
         <TextInput
             multiline={true}
             autoCapitalize={'sentences'}
             style={styles.inputText}
             onChangeText={setText}
             value={text}
+            defaultValue={texto}
             textAlignVertical= 'top'
             
         />
@@ -112,7 +96,7 @@ function Diario( props) {
           </View>
         </Pressable>
         </View>
-
+        
         </View>
       </DismissKeyboard>
     </>

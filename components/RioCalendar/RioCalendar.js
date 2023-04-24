@@ -5,7 +5,9 @@ import { useNavigation } from '@react-navigation/native';
 import {StoreContext} from '../../store/context/store';
 import Diario from '../Diario/Diary';
 import rioConstants from '../../constants';
-import { database } from '../../db';
+// import { database } from '../../db';
+
+import { useDispatch, useSelector } from 'react-redux';
 
 const screenWidth =  Dimensions.get("window").width;
 const centerX = Dimensions.get("window").width / 2;
@@ -13,89 +15,35 @@ const squareSide = Dimensions.get("window").height * 0.202;
 const margin = Dimensions.get("window").height * 0.008;
 const screenHeight = Dimensions.get("window").height;
 const tenPercent = Dimensions.get("window").height * 0.1;
-// const azulMarino = "#1C7BBA";
-// const azulAnil = "#5B8EB0";
-// const verdeAzulado = "#4EB5A2";
-// const magenta = "#DB8AC0";
-// const violeta = "#705C87";
-// const rojo = "#F04B35";
+
 
 const calendarViewWidth  = rioConstants.screenWidth * .88;
 const calendarViewLeft  = (rioConstants.screenWidth - calendarViewWidth)/2.;
-const calendarViewTop  = (rioConstants.screenHeight * .17);
+const calendarViewTop  = (rioConstants.screenHeight * .27);
 
 const dummy = {key: 'vacation', color: 'red', selectedDotColor: 'blue'};
-const recordToMarked = (r) => {
-  console.log("Converting: " + JSON.stringify(r));
+
+const ReduxRecordToMarked = (r) => {
+  console.log("ReduxRecordToMarked Converting: " + JSON.stringify(r));
   let m = {};
-  r.forEach( (e) => { 
-    if (e.value.length > 0) {
-      m[e.theDate] = {selected: false, marked: true, dots: [dummy],moodEmoji: 'otro'} ;
+  for (const key in r) {
+    console.log("a Redux record: " + key + " "  + r[key].text);
+    if (r[key].text.length > 0) {
+      m[key] = {selected: false, marked: true, dots: [dummy],moodEmoji: 'otro'} ;
     }
     else {
-      m[e.theDate] = {selected: false, marked: true, dots: [],moodEmoji: 'otro'} ;
-    }
-    console.log("a record: " + e.theDate +  "[" + e.value + "]");
+      m[key] = {selected: false, marked: true, dots: [],moodEmoji: 'otro'} ;
+    }   
   }
-  )
-  console.log(JSON.stringify(m));
+  console.log("ReduxRecordToMarked returning " + JSON.stringify(m));
   return m;
 }
 
 const RioCalendar = (props) => {
-  
-  const dateDataCtx = useContext(StoreContext); 
-  const rafa = dateDataCtx.dateData;
-  if (dateDataCtx.dateData === null)
-  dateDataCtx.addDateData(props.route.params.contextDateData);
-
-  console.log("=================================================");
-  console.log("rafa:" + rafa);
-  console.log(JSON.stringify(rafa));
-  console.log("=================================================");
-
-  console.log("PROPS!!!!" + JSON.stringify(props));
-
   const navigation = useNavigation();
-  const [selected, setSelected] = useState('');
 
-  // const [markedDates, setMarkedDates] = useState(props.route.params.markedDates); //useState( {'2023-03-17': {selected: true, marked: true} });
-
-  // const [markedDates, setMarkedDates] = useState(recordToMarked(props.route.params.contextDateData));
-  const [markedDates, setMarkedDates] = useState(rafa == null?  recordToMarked(props.route.params.contextDateData)  : recordToMarked(rafa));
-
-  // recordToMarked(props.route.params.contextDateData);
-
+  const theMarkedDateMap = ReduxRecordToMarked(useSelector(state => state.counter.dateData));
   const diaryEntry = {key: 'vacation', color: 'red', selectedDotColor: 'blue'};
-
-  // const [value, setValue] = useState(props.route.params.markedDates); 
- 
-
-  // This will launch only if propName value has chaged. 
-   
-  
-  // useEffect(() => { 
-  //   setMarkedDates(props.route.params.markedDates); 
-  //   console.log("In RioCalendar #1 setting marked dates to: " + JSON.stringify(props.route.params.markedDates));
-  // }, [props]); 
-
-  useEffect(() => { 
-    console.log("In RioCalendar markedDates dates to: " + JSON.stringify(markedDates));
-  }, [markedDates]); 
-  
-  const addToMarkedDates = (date) => {
-    console.log("\t\t\t\tWill add ths date: " + date);
-    dateDataCtx.addDateData(date);
-    setMarkedDates({...markedDates, [date]: {selected: false, marked: true, dots: [diaryEntry],moodEmoji: 'otro'}});
-  }
-
-  const removeIfExists = (d) => {
-    console.log("\t\t\t\tWill remove ths date: " + d);
-    if (markedDates.hasOwnProperty(d)) {
-      const { [d]: omittedKey, ...newState } = markedDates;
-      setMarkedDates(newState);
-    }
-  }
 
   return (  
 <View style={{backgroundColor: 'white', height: screenHeight * 2}}>
@@ -111,17 +59,10 @@ const RioCalendar = (props) => {
 disableArrowLeft={false}
 disableArrowRight={false}
   onDayPress={day => {
-    console.log(markedDates);
-    console.log(props.route.params.markedDates);
-    console.log('selected day', day.dateString, day.day, day.month, day.year);
-    let tmp = {[day.dateString]:{selected: true, marked: true}};
-    // tmp[day.dateString] = {selected: true, marked: true};
-    //setMarkedDates({...markedDates, [day.dateString]: {selected: true, marked: true}});
     navigation.navigate('Diario', {day:day.day,month:day.month,year:day.year, dateString:day.dateString, key:'vengo de dia', 
-      onGoBack: () => console.log('Will go back from nextComponent'), addToMarkedDates: addToMarkedDates,
-      removeIfExists: removeIfExists});
-
+      onGoBack: () => console.log('Will go back from nextComponent')});
   }}
+
   // Handler which gets executed on day long press. Default = undefined
   onDayLongPress={day => {
     console.log('selected day', day);
@@ -157,8 +98,7 @@ disableArrowRight={false}
   style={{
     borderWidth: 1,
     borderColor: 'gray',
-    height: 350
-    
+    height: 350  
   }}
 
   theme={{
@@ -188,24 +128,8 @@ disableArrowRight={false}
     textDayHeaderFontSize: 16
   }}
 
-  // markedDates={markedDates}
   
-  markedDates={rafa == null?  recordToMarked(props.route.params.contextDateData)  : recordToMarked(rafa)}
-
-  // This is for controlling how each date looks.
-  // dayComponent={({date, state}) => {
-  //   console.log(JSON.stringify(state));   
-  //   return (
-
-  // <TouchableOpacity style={[styles.square, styles.rectangle01]} onPress={()=> {
-  //   console.log(JSON.stringify(date) );
-  //   }
-  // }>
-  //       <Text style={{zIndex: 1, textAlign: 'center', color: state === 'disabled' ? 'green' : 'black'}}>{date.day}</Text>
-
-  //       </TouchableOpacity>
-  //   );
-  // }}
+  markedDates={theMarkedDateMap}//rafa == null?  recordToMarked(props.route.params.contextDateData)  : recordToMarked(rafa)}
 
 />
 </View>
@@ -241,60 +165,7 @@ const styles = StyleSheet.create({
   },
   rectangle01: {
      borderWidth: 1
-  },
-  // rectangle02: {
-  //   backgroundColor: rioConstants.azulAnil,
-  //   zIndex: 98,
-  //   top: squareSide,
-  //   left: centerX + 0.5 * margin,
-  // },
-  // rectangle03: {
-  //   backgroundColor: rioConstants.verdeAzulado,
-  //   zIndex: 98,
-  //   top: squareSide + margin + squareSide,
-  //   left: centerX - (squareSide + 0.5 * margin),
-  // },
-  // rectangle04: {
-  //   backgroundColor: rojo,
-  //   zIndex: 98,
-  //   top: squareSide + margin + squareSide,
-  //   left: centerX + 0.5 * margin,
-  // },
-  // rectangle05: {
-  //   backgroundColor: violeta,
-  //   zIndex: 98,
-  //   top: 3 * squareSide + 2 * margin,
-  //   left: centerX - (squareSide + 0.5 * margin),
-  // },
-  // rectangle06: {
-  //   backgroundColor: magenta,
-  //   zIndex: 98,
-  //   top: 3 * squareSide + 2 * margin,
-  //   left: centerX + 0.5 * margin,
-  // },
-
-  // comoTeSientesText: { fontSize: 24, color: verdeAzulado },
-  // comoTeSientesView: {
-  //   height: tenPercent,
-  //   width: squareSide * 2 + margin,
-  //   zIndex: 99,
-  //   position: "absolute",
-  //   top: 4 * squareSide + 3 * margin,
-  //   left: centerX - (squareSide + 0.5 * margin),
-  //   justifyContent: "center",
-  //   alignItems: "flex-start",
-  //   borderBottomColor: verdeAzulado,
-  //   borderBottomWidth: 2,
-  //   borderStyle: "solid",
-  // },
-  // desarrolladoEnView: {
-  //   top: 4 * squareSide + 3 * margin + tenPercent,
-  //   left: centerX - (squareSide + 0.5 * margin),
-  //   justifyContent: "flex-start",
-  //   alignItems: "flex-start",
-  // },
-
-  // desarrolladoEnText: { fontSize: 7, color: verdeAzulado },
+  }
 });
 
 export default RioCalendar;

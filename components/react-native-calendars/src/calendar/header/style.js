@@ -30,10 +30,10 @@ export default function (theme = {}) {
             flexDirection: 'row'
         },
         monthText: {
-            fontSize: 30,//appStyle.textMonthFontSize,
+            fontSize: 20,//appStyle.textMonthFontSize,
             // fontFamily: appStyle.textMonthFontFamily,
             // fontWeight: appStyle.textMonthFontWeight,
-            color: rioConstants.verdeAzulado, //appStyle.monthTextColor,
+            color: rioConstants.azulAnil, //appStyle.monthTextColor,
             // marginLeft: 60,
             // marginRight: 60,
             left:constants.screenWidth*(.44-.35),
@@ -53,7 +53,7 @@ export default function (theme = {}) {
             zIndex: 100,
             
             ...rtlStyle,
-            tintColor: rioConstants.verdeAzulado,//appStyle.arrowColor,
+            tintColor: rioConstants.azulAnil,//appStyle.arrowColor,
             ...Platform.select({
                 web: {
                     width: appStyle.arrowWidth,

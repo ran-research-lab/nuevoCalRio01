@@ -10,7 +10,7 @@ const rojo2 = "#FF0000";
 
 const margin = Dimensions.get("window").width * 0.008;
 const dayWidth = (Dimensions.get("window").width - margin) / 17.0;
-const dayHeight = (Dimensions.get("window").height) / 11.0;
+const dayHeight = (Dimensions.get("window").height) / 8.5;
 
 export default {
     azulMarino,

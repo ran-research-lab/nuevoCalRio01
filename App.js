@@ -1,57 +1,26 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {Calendar, CalendarList, LocaleConfig} from 'react-native-calendars';
-import {Text, View, Box,StyleSheet, Dimensions,TouchableOpacity}  from 'react-native';
 import {NavigationContainer} from '@react-navigation/native'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import LanguageSelector from './Idioma/LanguageSelector';
 import RioCalendar from './components/RioCalendar/RioCalendar';
-import * as SQLite from "expo-sqlite";
 import Diario from './components/Diario/Diary';
 import StoreContextProvider from './store/context/store';
-const diaryTableName = "diario";
-import {StoreContext} from './store/context/store';
-// import rioConstants from './constants';
-import {db, database} from './db';
 
-import * as SplashScreen from 'expo-splash-screen';
-import useDatabaseLoader from './useDatabase';
+// import * as SplashScreen from 'expo-splash-screen';
 
-
-// const isLoadingComplete = useCachedResources();
-
-// function openDatabase() {
-//   if (Platform.OS === "web") {
-//     return {
-//       transaction: () => {
-//         return {
-//           executeSql: () => {},
-//         };
-//       },
-//     };
-//   }
-
-//   const db = SQLite.openDatabase("db16.db");
-//   return db;
-// }
-// export const db = openDatabase();
-
-const diaryEntry = {key: 'vacation', color: 'red', selectedDotColor: 'blue'};
-const massage = {key: 'massage', color: 'blue', selectedDotColor: 'blue'};
-const workout = {key: 'workout', color: 'green'};
-
+import store, { persistor } from './redux/store';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
-  // SplashScreen.preventAutoHideAsync();
 
-  const isDBLoadingComplete = useDatabaseLoader();
 
   const [selected, setSelected] = useState('');
   const [markedDates, setMarkedDates] = useState( {});
 
-  const dateDataCtx = useContext(StoreContext); 
-  // dateDataCtx.select(db);
+
 
   const formatDate = (dateString) => {
     const [month, day, year] = dateString.split('/');
@@ -59,36 +28,10 @@ const App = () => {
     return formattedDate;
   }
 
-  useEffect(() => { 
-
-    console.log("In App.js  setting marked dates to: " +  JSON.stringify(markedDates));
-    console.log("datedata: " + dateDataCtx.dateData);
-  }, [markedDates]); 
-
-  useEffect(() => {
-
-
-
-
-
-
-    // console.log("creating table....");
-    // database.createTable(() => console.log("\t\tSuccesull creation..."));
-
-    // console.log("reading the available data to create calendarData....");
-    // database.select(setMarkedDates);
-    // database.select(dateDataCtx.addDateData);
-    
-  
-  }, []);
-
-
-  const tmpd = isDBLoadingComplete
-  if (tmpd) {
-    console.log('got the date data in App.js: ' + tmpd );
-    // dateDataCtx.addDateData(tmpd);
   return (
 < >
+<Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
 <StoreContextProvider>
 <NavigationContainer >
 
@@ -109,7 +52,7 @@ const App = () => {
       name='Calendario'
       component={RioCalendar}
       independent ={true}
-      initialParams={{'markedDates':markedDates, contextDateData: tmpd}}
+      initialParams={{'markedDates':markedDates}}
       options={{
         headerTitle: "",
         headerShown: false,
@@ -119,7 +62,7 @@ const App = () => {
       <Stack.Screen
         name='Diario'
         component={Diario}
-        initialParams={{ onAdd: database.addOrUpdate, 'onSelectDiaryEntry': database.selectDiaryEntry, 'onAnyRows': database.anyRows}}
+        initialParams={{   }}
         options={{
           headerTitle: "",
           headerShown: false,
@@ -129,9 +72,11 @@ const App = () => {
 
     </NavigationContainer>
     </StoreContextProvider>
+    </PersistGate>
+    </Provider>
     </>
   );
-      } else {return null;}
+
 };
 
 
