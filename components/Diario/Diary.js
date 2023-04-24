@@ -1,12 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image,Keyboard,  TouchableWithoutFeedback,TextInput,Pressable , Alert} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useContext } from 'react';
 // import { Espanol, English } from '../Idioma/Idiomas';
 import { useFocusEffect } from '@react-navigation/native';
 // import { browserHistory } from 'react-router';
 import { Espanol, English } from '../../Idioma/Idiomas';
 import rioConstants from '../../constants';
+import {db, database} from '../../db';
+import {StoreContext} from '../../store/context/store';
 
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -23,7 +25,7 @@ function Diario( props) {
   const {month} = props.route.params;
   const {year} = props.route.params;
   const {dateString} = props.route.params;
-
+  const dateDataCtx = useContext(StoreContext); 
   useEffect(
     () =>
       navigation.addListener('beforeRemove', (e) => {
@@ -34,21 +36,33 @@ function Diario( props) {
 
         // prevValue = props.route.params.onAnyRows( month + "/" + day + "/" + year) ;
         // console.log("PREV VALUE: "+ prevValue);
-        props.route.params.onAdd(text, month + "/" + day + "/" + year, dateString);
+
+
+        // Poner esto tal que la función de context sea la que llame a la base de datos
+        // Si el texto está vacío borrar.
+        //if (text.length > 0) {
+          dateDataCtx.addDateData({"theDate":dateString, "value": text} );
+          database.addOrUpdate(text, month + "/" + day + "/" + year, dateString);
+        //}
+        //else {
+        //  removeDateData({"theDate":dateString});
+        //}
+        // props.route.params.onAdd(text, month + "/" + day + "/" + year, dateString);
         tmpDate = month + "/" + day + "/" + year;
 
-        if (text.length > 0)
-          props.route.params.addToMarkedDates(dateString);
-        else {
-          props.route.params.removeIfExists(dateString);
-        }
+        // if (text.length > 0)
+        //   props.route.params.addToMarkedDates(dateString);
+        // else {
+        //   props.route.params.removeIfExists(dateString);
+        // }
         navigation.dispatch(e.data.action);
       }),
     [text, month, day, year] 
   );
 
   useEffect(() => {
-     props.route.params.onSelectDiaryEntry( month + "/" + day + "/" + year, setText) ;
+     props.route.params.onSelectDiaryEntry( month + "/" + day + "/" + year, 
+         setText, year + "-" + month.toString().padStart(2, '0') + "-" + day.toString().padStart(2, '0')) ;
   }, []);
 
   // const formatDate = (dateString) => {
@@ -90,12 +104,14 @@ function Diario( props) {
             textAlignVertical= 'top'
             
         />
-        
-        <Pressable onPress={() => navigation.navigate('Calendario')} style={{left:  0}}>
-          <View style={{top: rioConstants.screenHeight * .5, left:0, zIndex: 45, position: 'absolute', flex: 1, display: 'flex',  alignItems: 'center'}}>
-          <Text style={styles.buttonText}> <Image source={imageSource}   resizeMode = 'center'></Image> Regresar</Text>
+        <View style={{ top: rioConstants.screenHeight * .5,left:0, zIndex: 45}}>
+        <Pressable onPress={() => { navigation.navigate('Calendario')}} style={{left:  0}}>
+          {/* <View style={{top: rioConstants.screenHeight * .5, left:0, zIndex: 45, position: 'absolute', flex: 1, display: 'flex',  alignItems: 'center'}}> */}
+          <View>
+          <Text style={styles.buttonText}> <Image source={imageSource}   resizeMode = 'center'></Image> Return</Text>
           </View>
         </Pressable>
+        </View>
 
         </View>
       </DismissKeyboard>

@@ -1,9 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {Calendar, CalendarList, LocaleConfig} from 'react-native-calendars';
 import {Text, View, Box,StyleSheet, Dimensions,TouchableOpacity}  from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import {StoreContext} from '../../store/context/store';
 import Diario from '../Diario/Diary';
 import rioConstants from '../../constants';
+import { database } from '../../db';
 
 const screenWidth =  Dimensions.get("window").width;
 const centerX = Dimensions.get("window").width / 2;
@@ -21,12 +23,48 @@ const tenPercent = Dimensions.get("window").height * 0.1;
 const calendarViewWidth  = rioConstants.screenWidth * .88;
 const calendarViewLeft  = (rioConstants.screenWidth - calendarViewWidth)/2.;
 const calendarViewTop  = (rioConstants.screenHeight * .17);
+
+const dummy = {key: 'vacation', color: 'red', selectedDotColor: 'blue'};
+const recordToMarked = (r) => {
+  console.log("Converting: " + JSON.stringify(r));
+  let m = {};
+  r.forEach( (e) => { 
+    if (e.value.length > 0) {
+      m[e.theDate] = {selected: false, marked: true, dots: [dummy],moodEmoji: 'otro'} ;
+    }
+    else {
+      m[e.theDate] = {selected: false, marked: true, dots: [],moodEmoji: 'otro'} ;
+    }
+    console.log("a record: " + e.theDate +  "[" + e.value + "]");
+  }
+  )
+  console.log(JSON.stringify(m));
+  return m;
+}
+
 const RioCalendar = (props) => {
   
+  const dateDataCtx = useContext(StoreContext); 
+  const rafa = dateDataCtx.dateData;
+  if (dateDataCtx.dateData === null)
+  dateDataCtx.addDateData(props.route.params.contextDateData);
+
+  console.log("=================================================");
+  console.log("rafa:" + rafa);
+  console.log(JSON.stringify(rafa));
+  console.log("=================================================");
+
+  console.log("PROPS!!!!" + JSON.stringify(props));
+
   const navigation = useNavigation();
   const [selected, setSelected] = useState('');
 
-  const [markedDates, setMarkedDates] = useState(props.route.params.markedDates); //useState( {'2023-03-17': {selected: true, marked: true} });
+  // const [markedDates, setMarkedDates] = useState(props.route.params.markedDates); //useState( {'2023-03-17': {selected: true, marked: true} });
+
+  // const [markedDates, setMarkedDates] = useState(recordToMarked(props.route.params.contextDateData));
+  const [markedDates, setMarkedDates] = useState(rafa == null?  recordToMarked(props.route.params.contextDateData)  : recordToMarked(rafa));
+
+  // recordToMarked(props.route.params.contextDateData);
 
   const diaryEntry = {key: 'vacation', color: 'red', selectedDotColor: 'blue'};
 
@@ -47,6 +85,7 @@ const RioCalendar = (props) => {
   
   const addToMarkedDates = (date) => {
     console.log("\t\t\t\tWill add ths date: " + date);
+    dateDataCtx.addDateData(date);
     setMarkedDates({...markedDates, [date]: {selected: false, marked: true, dots: [diaryEntry],moodEmoji: 'otro'}});
   }
 
@@ -149,7 +188,9 @@ disableArrowRight={false}
     textDayHeaderFontSize: 16
   }}
 
-  markedDates={markedDates}
+  // markedDates={markedDates}
+  
+  markedDates={rafa == null?  recordToMarked(props.route.params.contextDateData)  : recordToMarked(rafa)}
 
   // This is for controlling how each date looks.
   // dayComponent={({date, state}) => {
