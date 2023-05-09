@@ -2,6 +2,9 @@ import React, {useState, useEffect} from 'react';
 import {Text, View, StyleSheet, Pressable} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+import {  useSelector, useDispatch } from 'react-redux'; 
+
+import { register } from '../redux/slices/counterSlice';
 
 let l = 'espanol'; 
 
@@ -10,14 +13,28 @@ function LanguageSelector (props) {
 
     const [markedDates, setMarkedDates] = useState('');
 
+    const dispatch = useDispatch(); 
+
+ 
+
+
+
     function english(){
         l = 'english'
+        dispatch(register());
         navigation.navigate('Calendario')
     }
 
     function espanol(){
         l = 'espanol'
+        dispatch(register());
+        navigation.replace("Calendario");
         navigation.navigate('Calendario')//, {key: 'Vengo de espanol', onAdd: props.route.params.onAdd});
+    }
+
+    if ( useSelector(state => state.counter.registered? true: false )) {
+      console.log("User is registered ----> to calendar we go... <=======================")
+      navigation.navigate('Calendario');
     }
 
     return (

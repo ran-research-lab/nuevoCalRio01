@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 export const counterSlice = createSlice({
    name: 'counter',
    initialState: {
+      registered: false,
       users: [
          { id: 1, name: 'John' },
          { id: 2, name: 'Jane' },
@@ -24,9 +25,13 @@ export const counterSlice = createSlice({
          state.value--;
          // state.otraCosa.splice(state.otraCosa.indexOf(action.payload.id),1);
       },
+      register: (state, actiion) => {
+         state.registered = true;
+         console.log("REGISTERING!!!! =============================================");
+      }
    },
 });
 
-export const { increaseByOne, decreaseByOne } = counterSlice.actions;
+export const { increaseByOne, decreaseByOne, register } = counterSlice.actions;
 
 export default counterSlice.reducer;

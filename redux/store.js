@@ -5,6 +5,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import counterReducer from './slices/counterSlice';
 
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
+
+
 const rootReducer = combineReducers({
    counter: counterReducer,
 });

@@ -2,7 +2,7 @@ import React, {useState, useEffect, useContext} from 'react';
 import {Calendar, CalendarList, LocaleConfig} from 'react-native-calendars';
 import {Text, View, Box,StyleSheet, Dimensions,TouchableOpacity}  from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import {StoreContext} from '../../store/context/store';
+// import {StoreContext} from '../../store/context/store';
 import Diario from '../Diario/Diary';
 import rioConstants from '../../constants';
 // import { database } from '../../db';
