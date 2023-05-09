@@ -1,7 +1,7 @@
 /// <reference types="react" />
 /// <reference types="xdate" />
 import { CalendarProps } from './calendar';
-import { CalendarListProps } from './calendar-list';
+// import { CalendarListProps } from './calendar-list';
 import { AgendaProps } from './agenda';
 import { ReservationListProps } from './agenda/reservation-list';
 import { MarkingProps } from './calendar/day/marking';

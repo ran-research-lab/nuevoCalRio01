@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import { database } from "../../db";
+// import { database } from "../../db";
 
 export const StoreContext = createContext({
     dateData: [],
